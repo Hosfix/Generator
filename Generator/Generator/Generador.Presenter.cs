@@ -166,12 +166,68 @@ namespace Generator
 
         private void GenerarPresenter(string ruta)
         {
-            throw new NotImplementedException();
+            string nombreMaestro = textEditNombreMaestro.EditValue.ToString();
+            string nombreEntidad = nombreMaestro + "Entidad";
+            string path = ruta + "\\" + nombreMaestro + ".Presenter.cs";
+
+            if (File.Exists(path))
+                File.Delete(path);
+
+            using (StreamWriter sw = File.CreateText(path))
+            {
+                sw.WriteLine("using System;");
+                sw.WriteLine("using System.Collections.Generic;");
+                sw.WriteLine("using System.ComponentModel;");
+
+                sw.WriteLine("namespace " + nombreMaestro);
+                sw.WriteLine("{");
+                sw.WriteLine("  public partial class " + nombreMaestro);
+                sw.WriteLine("  {");
+
+                sw.WriteLine("  }");
+                sw.WriteLine("}");
+            }
         }
 
         private void GenerarDesigner(string ruta)
         {
-            throw new NotImplementedException();
+            string nombreMaestro = textEditNombreMaestro.EditValue.ToString();
+            string nombreEntidad = nombreMaestro + "Entidad";
+            string path = ruta + "\\" + nombreMaestro + ".Designer.cs";
+
+            if (File.Exists(path))
+                File.Delete(path);
+
+            using (StreamWriter sw = File.CreateText(path))
+            {
+                sw.WriteLine("namespace " + nombreMaestro);
+                sw.WriteLine("{");
+                sw.WriteLine("  partial class " + nombreMaestro);
+                sw.WriteLine("  {");
+                sw.WriteLine("      private System.ComponentModel.IContainer components = null;");
+
+                sw.WriteLine("      protected override void Dispose(bool disposing)");
+                sw.WriteLine("      {");
+                sw.WriteLine("           if (disposing && (components != null))");
+                sw.WriteLine("           {");
+                sw.WriteLine("              components.Dispose();");
+                sw.WriteLine("           }");
+                sw.WriteLine("           base.Dispose(disposing);");
+                sw.WriteLine("      }");
+
+                sw.WriteLine("      private void InitializeComponent()");
+                sw.WriteLine("      {");
+                sw.WriteLine("      }");
+
+                sw.WriteLine("      private DevExpress.XtraGrid.GridControl gridControl" + nombreMaestro + ";");
+                sw.WriteLine("      private DevExpress.XtraGrid.Views.Grid.GridView gridView"+ nombreMaestro + ";");
+                sw.WriteLine("      private DevExpress.XtraEditors.SimpleButton cmdSalir;");
+                sw.WriteLine("      private DevExpress.XtraEditors.SimpleButton cmdCancelar;");
+                sw.WriteLine("      private DevExpress.XtraEditors.SimpleButton cmdAceptar;");
+
+                sw.WriteLine("  }");
+                sw.WriteLine("}");
+            }
         }
     }
 }
