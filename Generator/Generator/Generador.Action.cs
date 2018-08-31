@@ -9,14 +9,9 @@ namespace Generator
             lookUpEditColumnaBaja.Enabled = (sender as DevExpress.XtraEditors.CheckEdit).Checked;
         }
 
-        private void checkEditEntidad_CheckedChanged(object sender, EventArgs e)
-        {
-            textBoxEntidad.Enabled = (sender as DevExpress.XtraEditors.CheckEdit).Checked;
-        }
-
         private void gridViewDatos_ValidateRow(object sender, DevExpress.XtraGrid.Views.Base.ValidateRowEventArgs e)
         {
-            ComprobarNombreColumna(e.Row as DatosEntidad);
+            ComprobarNombreColumna(e.Row as DatosEntidad, e);
         }
 
         private void buttonGenerar_Click(object sender, EventArgs e)

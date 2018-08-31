@@ -32,14 +32,12 @@
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
             this.lookUpEditColumnaBaja = new DevExpress.XtraEditors.LookUpEdit();
             this.checkEditEntidad = new DevExpress.XtraEditors.CheckEdit();
-            this.textBoxEntidad = new DevExpress.XtraEditors.TextEdit();
             this.checkEditAgregar = new DevExpress.XtraEditors.CheckEdit();
             this.checkEditBaja = new DevExpress.XtraEditors.CheckEdit();
             this.layoutControlGroup2 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem7 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.buttonGenerar = new DevExpress.XtraEditors.SimpleButton();
@@ -75,7 +73,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
@@ -116,7 +113,6 @@
             // 
             this.layoutControl5.Controls.Add(this.lookUpEditColumnaBaja);
             this.layoutControl5.Controls.Add(this.checkEditEntidad);
-            this.layoutControl5.Controls.Add(this.textBoxEntidad);
             this.layoutControl5.Controls.Add(this.checkEditAgregar);
             this.layoutControl5.Controls.Add(this.checkEditBaja);
             this.layoutControl5.Location = new System.Drawing.Point(12, 63);
@@ -144,18 +140,9 @@
             this.checkEditEntidad.Location = new System.Drawing.Point(12, 59);
             this.checkEditEntidad.Name = "checkEditEntidad";
             this.checkEditEntidad.Properties.Caption = "Nueva Entidad";
-            this.checkEditEntidad.Size = new System.Drawing.Size(109, 19);
+            this.checkEditEntidad.Size = new System.Drawing.Size(265, 19);
             this.checkEditEntidad.StyleController = this.layoutControl5;
             this.checkEditEntidad.TabIndex = 6;
-            this.checkEditEntidad.CheckedChanged += new System.EventHandler(this.checkEditEntidad_CheckedChanged);
-            // 
-            // textBoxEntidad
-            // 
-            this.textBoxEntidad.Enabled = false;
-            this.textBoxEntidad.Location = new System.Drawing.Point(209, 59);
-            this.textBoxEntidad.Name = "textBoxEntidad";
-            this.textBoxEntidad.Size = new System.Drawing.Size(68, 20);
-            this.textBoxEntidad.TabIndex = 5;
             // 
             // checkEditAgregar
             // 
@@ -184,7 +171,6 @@
             this.layoutControlItem7,
             this.layoutControlItem8,
             this.layoutControlItem5,
-            this.layoutControlItem10,
             this.layoutControlItem9});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
@@ -214,18 +200,9 @@
             this.layoutControlItem5.Control = this.checkEditEntidad;
             this.layoutControlItem5.Location = new System.Drawing.Point(0, 47);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(113, 226);
+            this.layoutControlItem5.Size = new System.Drawing.Size(269, 226);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
-            // 
-            // layoutControlItem10
-            // 
-            this.layoutControlItem10.Control = this.textBoxEntidad;
-            this.layoutControlItem10.Location = new System.Drawing.Point(113, 47);
-            this.layoutControlItem10.Name = "layoutControlItem10";
-            this.layoutControlItem10.Size = new System.Drawing.Size(156, 226);
-            this.layoutControlItem10.Text = "Entidad";
-            this.layoutControlItem10.TextSize = new System.Drawing.Size(81, 13);
             // 
             // layoutControlItem9
             // 
@@ -477,7 +454,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
@@ -525,11 +501,9 @@
         private DevExpress.XtraEditors.CheckEdit checkEditAgregar;
         private DevExpress.XtraEditors.CheckEdit checkEditBaja;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem7;
-        private DevExpress.XtraEditors.TextEdit textBoxEntidad;
         private DevExpress.XtraEditors.SimpleButton buttonGenerar;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem11;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem8;
-        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
         private DevExpress.XtraEditors.CheckEdit checkEditEntidad;
         private DevExpress.XtraLayout.LayoutControlItem layoutControlItem5;
         private DevExpress.XtraEditors.LookUpEdit lookUpEditColumnaBaja;
