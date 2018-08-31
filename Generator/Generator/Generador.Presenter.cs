@@ -146,6 +146,21 @@ namespace Generator
                 sw.WriteLine("  public partial class " + nombreMaestro);
                 sw.WriteLine("  {");
 
+                sw.WriteLine("      private void cmdAceptar_Click(object sender, EventArgs e)");
+                sw.WriteLine("      {");
+                sw.WriteLine("          Guardar();");
+                sw.WriteLine("      }");
+
+                sw.WriteLine("      private void cmdCancelar_Click(object sender, EventArgs e)");
+                sw.WriteLine("      {");
+                sw.WriteLine("          RefrescarDataSource();");
+                sw.WriteLine("      }");
+
+                sw.WriteLine("      private void cmdSalir_Click(object sender, EventArgs e)");
+                sw.WriteLine("      {");
+                sw.WriteLine("          Close();");
+                sw.WriteLine("      }");
+
                 if ((bool)checkEditBaja.EditValue)
                 {
                     sw.WriteLine("      private void gridControl" + nombreMaestro + "_EmbeddedNavigator_ButtonClick(object sender, DevExpress.XtraEditors.NavigatorButtonClickEventArgs e)");
@@ -184,6 +199,34 @@ namespace Generator
                 sw.WriteLine("  public partial class " + nombreMaestro);
                 sw.WriteLine("  {");
 
+                sw.WriteLine("      private void RefrescarDataSource()");
+                sw.WriteLine("      {");
+
+                if ((bool)checkEditEntidad.EditValue)
+                    sw.WriteLine("          _lista" + nombreEntidad + " = new List<"+ nombreEntidad + ">();");
+                sw.WriteLine("          //Obtenemos los datos y rellenamos la lista");
+
+                sw.WriteLine("      }");
+
+                sw.WriteLine("      private void Guardar()");
+                sw.WriteLine("      {");
+                sw.WriteLine("          Cursor.Current = Cursors.WaitCursor;");
+
+                sw.WriteLine("      try");
+                sw.WriteLine("      {");
+                sw.WriteLine("          //Guardamos los datos utilizando la lista --> Metodo(_listaEntida);");
+                sw.WriteLine("          RefrescarDataSource();");
+                sw.WriteLine("          XtraMessageBox.Show(\"Guardado Correctamente.\", \"Informacion\", MessageBoxButtons.OK, MessageBoxIcon.Information);");
+                sw.WriteLine("      }");
+                sw.WriteLine("      catch (Exception ex)");
+                sw.WriteLine("      {");
+                sw.WriteLine("          XtraMessageBox.Show(\"Se ha producido un error \" + ex.Message);");
+                sw.WriteLine("          throw ex;");
+                sw.WriteLine("      }");
+
+                sw.WriteLine("          Cursor.Current = Cursors.Default;");
+                sw.WriteLine("      }");
+
                 sw.WriteLine("  }");
                 sw.WriteLine("}");
             }
@@ -217,6 +260,24 @@ namespace Generator
 
                 sw.WriteLine("      private void InitializeComponent()");
                 sw.WriteLine("      {");
+                sw.WriteLine("          this.components = new System.ComponentModel.Container();");
+                sw.WriteLine("          this.cmdSalir = new DevExpress.XtraEditors.SimpleButton();");
+                sw.WriteLine("          this.cmdCancelar = new DevExpress.XtraEditors.SimpleButton();");
+                sw.WriteLine("          this.cmdAceptar = new DevExpress.XtraEditors.SimpleButton();");
+                sw.WriteLine("          this.gridControl" + nombreMaestro + " = new DevExpress.XtraGrid.GridControl();");
+                sw.WriteLine("          this.gridView" + nombreMaestro + " = new DevExpress.XtraGrid.Views.Grid.GridView();");
+
+                foreach (var dato in _listaDatos)
+                    sw.WriteLine("          this.gridColumn" + dato.Columna + " = new DevExpress.XtraGrid.Columns.GridColumn();");
+
+                sw.WriteLine("          ((System.ComponentModel.ISupportInitialize)(this.gridControlDatos)).BeginInit();");
+                sw.WriteLine("          ((System.ComponentModel.ISupportInitialize)(this.gridViewDatos)).BeginInit();");
+                sw.WriteLine("          this.SuspendLayout();");
+
+                sw.WriteLine("          ((System.ComponentModel.ISupportInitialize)(this.gridControlDatos)).EndInit();");
+                sw.WriteLine("          ((System.ComponentModel.ISupportInitialize)(this.gridViewDatos)).EndInit();");
+                sw.WriteLine("          this.ResumeLayout(false);");
+
                 sw.WriteLine("      }");
 
                 sw.WriteLine("      private DevExpress.XtraGrid.GridControl gridControl" + nombreMaestro + ";");
@@ -224,6 +285,8 @@ namespace Generator
                 sw.WriteLine("      private DevExpress.XtraEditors.SimpleButton cmdSalir;");
                 sw.WriteLine("      private DevExpress.XtraEditors.SimpleButton cmdCancelar;");
                 sw.WriteLine("      private DevExpress.XtraEditors.SimpleButton cmdAceptar;");
+                foreach (var dato in _listaDatos)
+                    sw.WriteLine("      private DevExpress.XtraGrid.Columns.GridColumn gridColumn" + dato.Columna + ";");
 
                 sw.WriteLine("  }");
                 sw.WriteLine("}");
