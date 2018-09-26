@@ -59,8 +59,10 @@
             this.repositoryItemLookUpEditTipoDato = new DevExpress.XtraEditors.Repository.RepositoryItemLookUpEdit();
             this.gridColumnNullable = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnVisible = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnEditable = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.gridColumnValidador = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
@@ -134,6 +136,7 @@
             this.lookUpEditColumnaBaja.Size = new System.Drawing.Size(68, 20);
             this.lookUpEditColumnaBaja.StyleController = this.layoutControl5;
             this.lookUpEditColumnaBaja.TabIndex = 7;
+            this.lookUpEditColumnaBaja.EditValueChanged += new System.EventHandler(this.lookUpEditColumnaBaja_EditValueChanged);
             // 
             // checkEditEntidad
             // 
@@ -362,7 +365,9 @@
             this.gridColumnColumna,
             this.gridColumnTipoDato,
             this.gridColumnNullable,
-            this.gridColumnVisible});
+            this.gridColumnVisible,
+            this.gridColumnEditable,
+            this.gridColumnValidador});
             this.gridViewDatos.GridControl = this.gridControlDatos;
             this.gridViewDatos.Name = "gridViewDatos";
             this.gridViewDatos.OptionsCustomization.AllowGroup = false;
@@ -409,6 +414,14 @@
             this.gridColumnVisible.Visible = true;
             this.gridColumnVisible.VisibleIndex = 3;
             // 
+            // gridColumnEditable
+            // 
+            this.gridColumnEditable.Caption = "Editable";
+            this.gridColumnEditable.FieldName = "Editable";
+            this.gridColumnEditable.Name = "gridColumnEditable";
+            this.gridColumnEditable.Visible = true;
+            this.gridColumnEditable.VisibleIndex = 4;
+            // 
             // layoutControlGroup4
             // 
             this.layoutControlGroup4.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -428,6 +441,14 @@
             this.layoutControlItem1.Size = new System.Drawing.Size(434, 399);
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
+            // 
+            // gridColumnValidador
+            // 
+            this.gridColumnValidador.Caption = "Validador";
+            this.gridColumnValidador.FieldName = "Validador";
+            this.gridColumnValidador.Name = "gridColumnValidador";
+            this.gridColumnValidador.Visible = true;
+            this.gridColumnValidador.VisibleIndex = 5;
             // 
             // Generador
             // 
@@ -513,8 +534,8 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnTipoDato;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnNullable;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnVisible;
-
-
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnEditable;
+        private DevExpress.XtraGrid.Columns.GridColumn gridColumnValidador;
     }
 }
 

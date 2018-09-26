@@ -10,9 +10,16 @@
 
         public bool Visible { get; set; }
 
+        public bool Editable { get; set; }
+
+        public bool Validador { get; set; }
+
         public DatosEntidad()
         {
-            TipoDato = "String";
+            TipoDato = "string";
+            Visible = true;
+            Editable = true;
+            Validador = true;
         }
     }
 }

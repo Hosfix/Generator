@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Generator
@@ -19,13 +18,13 @@ namespace Generator
             lookUpEditColumnaBaja.Properties.DataSource = _listaDatos;
 
             List<string> listaTipoDatos = new List<string>();
-            listaTipoDatos.Add("String");
-            listaTipoDatos.Add("Int");
-            listaTipoDatos.Add("Decimal");
-            listaTipoDatos.Add("Double");
+            listaTipoDatos.Add("string");
+            listaTipoDatos.Add("int");
+            listaTipoDatos.Add("decimal");
+            listaTipoDatos.Add("double");
             listaTipoDatos.Add("DateTime");
-            listaTipoDatos.Add("Bool");
-
+            listaTipoDatos.Add("bool");
+            
             repositoryItemLookUpEditTipoDato.DataSource = listaTipoDatos;
         }
     }
