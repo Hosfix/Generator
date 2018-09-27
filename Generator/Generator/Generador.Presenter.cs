@@ -17,6 +17,11 @@ namespace Generator
                 e.Valid = false;
                 e.ErrorText = "No ha rellenado el nombre de la columna";
             }
+            else if (linea.Columna.Any(Char.IsWhiteSpace))
+            {
+                e.Valid = false;
+                e.ErrorText = "El nombre de la propiedad no puede tener espacios";
+            }
             else if (_listaDatos.FindAll(d => d.Columna.ToUpper() == linea.Columna.ToUpper()).Count > 1)
             {
                 e.Valid = false;
@@ -28,11 +33,11 @@ namespace Generator
         {
             bool resultado = false;
 
-            if (String.IsNullOrEmpty((textEditNombreMaestro.EditValue as String)))
+            if (String.IsNullOrEmpty(textEditNombreMaestro.Text))
                 XtraMessageBox.Show("Debe rellenar el nombre del maestro", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else if ((bool)checkEditEntidad.EditValue && String.IsNullOrEmpty((textEditNombreMaestro.EditValue as String)))
-                XtraMessageBox.Show("Debe rellenar el nombre de la entidad si quiere generarla", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else if ((bool)checkEditBaja.EditValue && String.IsNullOrEmpty((lookUpEditColumnaBaja.EditValue as String)))
+            else if (checkEditEntidad.Checked && String.IsNullOrEmpty(lookUpEditPais.Text))
+                XtraMessageBox.Show("Debe seleccionar el pais del maestro para poder generar el constructor que recoge los datos del IDataReader", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else if (checkEditBaja.Checked && String.IsNullOrEmpty(lookUpEditColumnaBaja.Text))
                 XtraMessageBox.Show("Debe seleccionar la columna que contendrá el dato de fecha baja", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             else if (_listaDatos.Count <= 0)
                 XtraMessageBox.Show("No ha añadido ninguna columna", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -55,6 +60,7 @@ namespace Generator
                     GenerarAction(fbd.SelectedPath);
                     GenerarPresenter(fbd.SelectedPath);
                     GenerarDesigner(fbd.SelectedPath);
+                    XtraMessageBox.Show("Maestro generado", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
 
@@ -63,8 +69,8 @@ namespace Generator
 
         private void GenerarEntidad(string ruta)
         {
-            if (!(bool)checkEditEntidad.EditValue) return;
-            string nombreMaestro = textEditNombreMaestro.EditValue.ToString();
+            if (!checkEditEntidad.Checked) return;
+            string nombreMaestro = textEditNombreMaestro.Text;
             string nombreEntidad = nombreMaestro + "Entidad";
             string path = ruta + "\\" + nombreEntidad + ".cs";
 
@@ -73,7 +79,16 @@ namespace Generator
 
             using (StreamWriter sw = File.CreateText(path))
             {
+                var pais = lookUpEditPais.Text;
+                if (pais == "Colombia")
+                    sw.WriteLine("using HM.Comun.Persistencia.Entidad;"); //COL
+                else if (pais == "Chile")
+                    sw.WriteLine("using HM.MMS.ContratosInterfaces.DAL;"); //CHL
+                else
+                    sw.WriteLine("using HM.Comun.Persistencia.DAL;"); //Mexico
+
                 sw.WriteLine("using System;");
+                sw.WriteLine("using System.Data;");
                 sw.WriteLine("using System.Runtime.Serialization;");
                 sw.WriteLine("namespace " + nombreMaestro);
                 sw.WriteLine("{");
@@ -84,7 +99,7 @@ namespace Generator
                 foreach (var dato in _listaDatos)
                 {
                     sw.WriteLine("      [DataMember]");
-                    if (dato.Nullable && dato.TipoDato != "String")
+                    if (dato.Nullable && dato.TipoDato != "string" && dato.TipoDato != "bool")
                         sw.WriteLine("      public " + dato.TipoDato + "? " + dato.Columna + " { get; set; }");
                     else
                         sw.WriteLine("      public " + dato.TipoDato + " " + dato.Columna + " { get; set; }");
@@ -104,6 +119,18 @@ namespace Generator
                 sw.WriteLine("      {");
                 sw.WriteLine("          Estado = EstadoFila.Nueva;");
                 sw.WriteLine("      }");
+                sw.WriteLine("");
+                sw.WriteLine("      public " + nombreEntidad + "(IDataReader reader)");
+                sw.WriteLine("      {");
+                sw.WriteLine("          Estado = EstadoFila.Ninguno;");
+                foreach (var dato in _listaDatos)
+                {
+                    if (dato.Nullable && dato.TipoDato != "string" && dato.TipoDato != "bool")
+                        sw.WriteLine("          " + dato.Columna + " = reader.GetValue<" + dato.TipoDato + "?>(\"" + dato.Columna.ToUpper() + "\");");
+                    else
+                        sw.WriteLine("          " + dato.Columna + " = reader.GetValue<" + dato.TipoDato + ">(\"" + dato.Columna.ToUpper() + "\");");
+                }
+                sw.WriteLine("      }");
                 sw.WriteLine("  }");
                 sw.WriteLine("}");
             }
@@ -111,7 +138,7 @@ namespace Generator
 
         private void GenerarClaseBase(string ruta)
         {
-            string nombreMaestro = textEditNombreMaestro.EditValue.ToString();
+            string nombreMaestro = textEditNombreMaestro.Text;
             string nombreEntidad = nombreMaestro + "Entidad";
             string path = ruta + "\\" + nombreMaestro + ".cs";
 
@@ -129,13 +156,13 @@ namespace Generator
                 sw.WriteLine("  public partial class " + nombreMaestro + " : DevExpress.XtraEditors.XtraForm");
                 sw.WriteLine("  {");
 
-                if ((bool)checkEditEntidad.EditValue)
-                    sw.WriteLine("      private List<" + nombreEntidad + "> _lista" + nombreEntidad +";");
+                if (checkEditEntidad.Checked)
+                    sw.WriteLine("      private List<" + nombreEntidad + "> _lista" + nombreEntidad + " = new List<" + nombreEntidad + ">();");
 
                 sw.WriteLine("      public " + nombreMaestro + " ()");
                 sw.WriteLine("      {");
                 sw.WriteLine("          InitializeComponent();");
-                if ((bool)checkEditEntidad.EditValue)
+                if (checkEditEntidad.Checked)
                     sw.WriteLine("          ObtenerDatosGrid();");
                 sw.WriteLine("      }");
 
@@ -146,7 +173,7 @@ namespace Generator
 
         private void GenerarAction(string ruta)
         {
-            string nombreMaestro = textEditNombreMaestro.EditValue.ToString();
+            string nombreMaestro = textEditNombreMaestro.Text;
             string nombreEntidad = nombreMaestro + "Entidad";
             string path = ruta + "\\" + nombreMaestro + ".Action.cs";
 
@@ -184,20 +211,37 @@ namespace Generator
                 sw.WriteLine("          Close();");
                 sw.WriteLine("      }");
 
-                if ((bool)checkEditBaja.EditValue || (bool)checkEditAgregar.EditValue)
+                sw.WriteLine("      private void gridView" + nombreMaestro + "_CellValueChanged(object sender, DevExpress.XtraGrid.Views.Base.CellValueChangedEventArgs e)");
+                sw.WriteLine("      {");
+                sw.WriteLine("          if ((" + nombreEntidad + ".EstadoFila)gridView" + nombreMaestro + ".GetRowCellValue(e.RowHandle, \"Estado\") == " + nombreEntidad + ".EstadoFila.Ninguno)");
+                sw.WriteLine("          {");
+                sw.WriteLine("              gridView" + nombreMaestro + ".SetRowCellValue(e.RowHandle, \"Estado\", " + nombreEntidad + ".EstadoFila.Modificada);");
+                sw.WriteLine("          }"); 
+                sw.WriteLine("      }");
+
+                if (checkEditBaja.Checked || checkEditAgregar.Checked || checkEditEliminarFila.Checked)
                 {
                     sw.WriteLine("      private void gridControl" + nombreMaestro + "_EmbeddedNavigator_ButtonClick(object sender, DevExpress.XtraEditors.NavigatorButtonClickEventArgs e)");
                     sw.WriteLine("      {");
-                    if ((bool)checkEditBaja.EditValue)
+                    if (checkEditBaja.Checked || checkEditEliminarFila.Checked)
                     {
                         sw.WriteLine("          if (e.Button.ButtonType == DevExpress.XtraEditors.NavigatorButtonType.Remove)");
                         sw.WriteLine("          {");
-                        sw.WriteLine("              foreach (int fila in gridView" + nombreMaestro + ".GetSelectedRows())");
-                        sw.WriteLine("                  gridView" + nombreMaestro + ".SetRowCellValue(fila, \"" + lookUpEditColumnaBaja.EditValue.ToString() + "\", DateTime.Now);");
-                        sw.WriteLine("              e.Handled = true;");
+                        if (checkEditBaja.Checked)
+                        {
+                            sw.WriteLine("              foreach (int fila in gridView" + nombreMaestro + ".GetSelectedRows())");
+                            sw.WriteLine("                  gridView" + nombreMaestro + ".SetRowCellValue(fila, \"" + lookUpEditColumnaBaja.Text + "\", DateTime.Now);");
+                            sw.WriteLine("              e.Handled = true;");
+                        }
+                        else
+                        {
+                            sw.WriteLine("              foreach (int fila in gridView" + nombreMaestro + ".GetSelectedRows())");
+                            sw.WriteLine("                  gridView" + nombreMaestro + ".SetRowCellValue(fila, \"Estado\", " + nombreEntidad + ".EstadoFila.Eliminada);");
+                            sw.WriteLine("              e.Handled = true;");
+                        }
                         sw.WriteLine("          }");
                     }
-                    if ((bool)checkEditAgregar.EditValue)
+                    if (checkEditAgregar.Checked)
                     {
                         sw.WriteLine("          if (e.Button.ButtonType == DevExpress.XtraEditors.NavigatorButtonType.Append)");
                         sw.WriteLine("          {");
@@ -215,7 +259,7 @@ namespace Generator
 
         private void GenerarPresenter(string ruta)
         {
-            string nombreMaestro = textEditNombreMaestro.EditValue.ToString();
+            string nombreMaestro = textEditNombreMaestro.Text;
             string nombreEntidad = nombreMaestro + "Entidad";
             string path = ruta + "\\" + nombreMaestro + ".Presenter.cs";
 
@@ -251,7 +295,7 @@ namespace Generator
                             sw.WriteLine("              e.ErrorText = \"No ha rellenado el nombre de la columna\";");
                             sw.WriteLine("          }");
                         }
-                        else if (dato.TipoDato != "string" && dato.Nullable)
+                        else if (dato.TipoDato != "string" && dato.TipoDato != "bool" && dato.Nullable)
                         {
                             sw.WriteLine("          if (linea." + dato.Columna + " == null)");
                             sw.WriteLine("          {");
@@ -266,7 +310,7 @@ namespace Generator
                 sw.WriteLine("      private void RefrescarDataSource()");
                 sw.WriteLine("      {");
 
-                if ((bool)checkEditEntidad.EditValue)
+                if (checkEditEntidad.Checked)
                     sw.WriteLine("          _lista" + nombreEntidad + " = new List<" + nombreEntidad + ">();");
 
                 sw.WriteLine("          ObtenerDatosGrid();");
@@ -301,6 +345,7 @@ namespace Generator
                 sw.WriteLine("          try");
                 sw.WriteLine("          {");
                 sw.WriteLine("              _lista" + nombreEntidad + " = MaestroAgent.Obtener" + nombreMaestro + "();");
+                sw.WriteLine("              gridControl" + nombreMaestro + ".DataSource = new BindingList<" + nombreEntidad + ">(_lista" + nombreEntidad + ");");
                 sw.WriteLine("              gridControl" + nombreMaestro + ".RefreshDataSource();");
                 sw.WriteLine("          }");
                 sw.WriteLine("          catch (Exception ex)");
@@ -321,7 +366,7 @@ namespace Generator
 
         private void GenerarDesigner(string ruta)
         {
-            string nombreMaestro = textEditNombreMaestro.EditValue.ToString();
+            string nombreMaestro = textEditNombreMaestro.Text;
             string nombreEntidad = nombreMaestro + "Entidad";
             string path = ruta + "\\" + nombreMaestro + ".Designer.cs";
             var gridControlName = "this.gridControl" + nombreMaestro;
@@ -389,10 +434,10 @@ namespace Generator
                 sw.WriteLine("          // " + gridControlName);
                 sw.WriteLine("          // ");
                 sw.WriteLine("          " + gridControlName + ".UseEmbeddedNavigator = true;");
-                if(!(bool)checkEditAgregar.EditValue)
+                if (!checkEditAgregar.Checked)
                     sw.WriteLine("          " + gridControlName + ".EmbeddedNavigator.Buttons.Append.Enabled = false;");
 
-                if ((bool)checkEditBaja.EditValue || (bool)checkEditAgregar.EditValue)
+                if (checkEditBaja.Checked || checkEditAgregar.Checked)
                     sw.WriteLine("          " + gridControlName + ".EmbeddedNavigator.ButtonClick += new DevExpress.XtraEditors.NavigatorButtonClickEventHandler(gridControl" + nombreMaestro + "_EmbeddedNavigator_ButtonClick);");
                 sw.WriteLine("          " + gridControlName + ".Location = new System.Drawing.Point(12, 12);");
                 sw.WriteLine("          " + gridControlName + ".MainView = gridView" + nombreMaestro + ";");
@@ -415,6 +460,7 @@ namespace Generator
                 sw.WriteLine("          " + gridViewName + ".Name = \"grvView\";");
                 sw.WriteLine("          " + gridViewName + ".RowHeight = 16;");
                 sw.WriteLine("          " + gridViewName + ".OptionsView.ShowGroupPanel = false;");
+                sw.WriteLine("          " + gridViewName + ".CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(" + gridViewName + "_CellValueChanged);");
                 sw.WriteLine("          // ");
                 sw.WriteLine("          // cmdAceptar");
                 sw.WriteLine("          // ");
@@ -459,7 +505,8 @@ namespace Generator
                     sw.WriteLine("          this.gridColumn" + dato.Columna + ".FieldName = \"" + dato.Columna + "\";");
                     sw.WriteLine("          this.gridColumn" + dato.Columna + ".Name = \"gridColumn" + dato.Columna + "\";");
                     sw.WriteLine("          this.gridColumn" + dato.Columna + ".Visible = " + dato.Visible.ToString().ToLower() + ";");
-                    sw.WriteLine("          this.gridColumn" + dato.Columna + ".VisibleIndex = " + count + ";");
+                    if (dato.Visible)
+                        sw.WriteLine("          this.gridColumn" + dato.Columna + ".VisibleIndex = " + count + ";");
                     sw.WriteLine("          this.gridColumn" + dato.Columna + ".OptionsColumn.AllowEdit = " + dato.Editable.ToString().ToLower() + ";");
                     count++;
                 }
@@ -471,7 +518,6 @@ namespace Generator
                 sw.WriteLine("          this.gridColumnEstado.FieldName = \"Estado\";");
                 sw.WriteLine("          this.gridColumnEstado.Name = \"gridColumnEstado\";");
                 sw.WriteLine("          this.gridColumnEstado.Visible = false;");
-                sw.WriteLine("          this.gridColumnEstado.VisibleIndex = " + count + ";");
 
                 sw.WriteLine("          // ");
                 sw.WriteLine("          // layoutControl1");

@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Generador));
             this.layoutControl3 = new DevExpress.XtraLayout.LayoutControl();
             this.layoutControl5 = new DevExpress.XtraLayout.LayoutControl();
+            this.lookUpEditPais = new DevExpress.XtraEditors.LookUpEdit();
+            this.checkEditEliminarFila = new DevExpress.XtraEditors.CheckEdit();
             this.lookUpEditColumnaBaja = new DevExpress.XtraEditors.LookUpEdit();
             this.checkEditEntidad = new DevExpress.XtraEditors.CheckEdit();
             this.checkEditAgregar = new DevExpress.XtraEditors.CheckEdit();
@@ -39,6 +42,8 @@
             this.layoutControlItem8 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem5 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControlItem9 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem10 = new DevExpress.XtraLayout.LayoutControlItem();
+            this.layoutControlItem12 = new DevExpress.XtraLayout.LayoutControlItem();
             this.layoutControl2 = new DevExpress.XtraLayout.LayoutControl();
             this.buttonGenerar = new DevExpress.XtraEditors.SimpleButton();
             this.layoutControlGroup1 = new DevExpress.XtraLayout.LayoutControlGroup();
@@ -60,13 +65,15 @@
             this.gridColumnNullable = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnVisible = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridColumnEditable = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.gridColumnValidador = new DevExpress.XtraGrid.Columns.GridColumn();
             this.layoutControlGroup4 = new DevExpress.XtraLayout.LayoutControlGroup();
             this.layoutControlItem1 = new DevExpress.XtraLayout.LayoutControlItem();
-            this.gridColumnValidador = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl3)).BeginInit();
             this.layoutControl3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).BeginInit();
             this.layoutControl5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.lookUpEditPais.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditEliminarFila.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookUpEditColumnaBaja.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkEditEntidad.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkEditAgregar.Properties)).BeginInit();
@@ -76,6 +83,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).BeginInit();
             this.layoutControl2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).BeginInit();
@@ -113,6 +122,8 @@
             // 
             // layoutControl5
             // 
+            this.layoutControl5.Controls.Add(this.lookUpEditPais);
+            this.layoutControl5.Controls.Add(this.checkEditEliminarFila);
             this.layoutControl5.Controls.Add(this.lookUpEditColumnaBaja);
             this.layoutControl5.Controls.Add(this.checkEditEntidad);
             this.layoutControl5.Controls.Add(this.checkEditAgregar);
@@ -123,6 +134,27 @@
             this.layoutControl5.Size = new System.Drawing.Size(289, 293);
             this.layoutControl5.TabIndex = 6;
             this.layoutControl5.Text = "layoutControl5";
+            // 
+            // lookUpEditPais
+            // 
+            this.lookUpEditPais.Enabled = false;
+            this.lookUpEditPais.Location = new System.Drawing.Point(96, 105);
+            this.lookUpEditPais.Name = "lookUpEditPais";
+            this.lookUpEditPais.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
+            new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
+            this.lookUpEditPais.Size = new System.Drawing.Size(181, 20);
+            this.lookUpEditPais.StyleController = this.layoutControl5;
+            this.lookUpEditPais.TabIndex = 9;
+            // 
+            // checkEditEliminarFila
+            // 
+            this.checkEditEliminarFila.Location = new System.Drawing.Point(12, 36);
+            this.checkEditEliminarFila.Name = "checkEditEliminarFila";
+            this.checkEditEliminarFila.Properties.Caption = "Eliminar Fila";
+            this.checkEditEliminarFila.Size = new System.Drawing.Size(265, 19);
+            this.checkEditEliminarFila.StyleController = this.layoutControl5;
+            this.checkEditEliminarFila.TabIndex = 8;
+            this.checkEditEliminarFila.CheckedChanged += new System.EventHandler(this.checkEditEliminarFila_CheckedChanged);
             // 
             // lookUpEditColumnaBaja
             // 
@@ -140,16 +172,17 @@
             // 
             // checkEditEntidad
             // 
-            this.checkEditEntidad.Location = new System.Drawing.Point(12, 59);
+            this.checkEditEntidad.Location = new System.Drawing.Point(12, 82);
             this.checkEditEntidad.Name = "checkEditEntidad";
             this.checkEditEntidad.Properties.Caption = "Nueva Entidad";
             this.checkEditEntidad.Size = new System.Drawing.Size(265, 19);
             this.checkEditEntidad.StyleController = this.layoutControl5;
             this.checkEditEntidad.TabIndex = 6;
+            this.checkEditEntidad.CheckedChanged += new System.EventHandler(this.checkEditEntidad_CheckedChanged);
             // 
             // checkEditAgregar
             // 
-            this.checkEditAgregar.Location = new System.Drawing.Point(12, 36);
+            this.checkEditAgregar.Location = new System.Drawing.Point(12, 59);
             this.checkEditAgregar.Name = "checkEditAgregar";
             this.checkEditAgregar.Properties.Caption = "Agregar Fila";
             this.checkEditAgregar.Size = new System.Drawing.Size(265, 19);
@@ -174,7 +207,9 @@
             this.layoutControlItem7,
             this.layoutControlItem8,
             this.layoutControlItem5,
-            this.layoutControlItem9});
+            this.layoutControlItem9,
+            this.layoutControlItem10,
+            this.layoutControlItem12});
             this.layoutControlGroup2.Location = new System.Drawing.Point(0, 0);
             this.layoutControlGroup2.Name = "layoutControlGroup2";
             this.layoutControlGroup2.Size = new System.Drawing.Size(289, 293);
@@ -192,7 +227,7 @@
             // layoutControlItem8
             // 
             this.layoutControlItem8.Control = this.checkEditAgregar;
-            this.layoutControlItem8.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem8.Location = new System.Drawing.Point(0, 47);
             this.layoutControlItem8.Name = "layoutControlItem8";
             this.layoutControlItem8.Size = new System.Drawing.Size(269, 23);
             this.layoutControlItem8.TextSize = new System.Drawing.Size(0, 0);
@@ -201,9 +236,9 @@
             // layoutControlItem5
             // 
             this.layoutControlItem5.Control = this.checkEditEntidad;
-            this.layoutControlItem5.Location = new System.Drawing.Point(0, 47);
+            this.layoutControlItem5.Location = new System.Drawing.Point(0, 70);
             this.layoutControlItem5.Name = "layoutControlItem5";
-            this.layoutControlItem5.Size = new System.Drawing.Size(269, 226);
+            this.layoutControlItem5.Size = new System.Drawing.Size(269, 23);
             this.layoutControlItem5.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem5.TextVisible = false;
             // 
@@ -215,6 +250,24 @@
             this.layoutControlItem9.Size = new System.Drawing.Size(156, 24);
             this.layoutControlItem9.Text = "Nombre Columna";
             this.layoutControlItem9.TextSize = new System.Drawing.Size(81, 13);
+            // 
+            // layoutControlItem10
+            // 
+            this.layoutControlItem10.Control = this.checkEditEliminarFila;
+            this.layoutControlItem10.Location = new System.Drawing.Point(0, 24);
+            this.layoutControlItem10.Name = "layoutControlItem10";
+            this.layoutControlItem10.Size = new System.Drawing.Size(269, 23);
+            this.layoutControlItem10.TextSize = new System.Drawing.Size(0, 0);
+            this.layoutControlItem10.TextVisible = false;
+            // 
+            // layoutControlItem12
+            // 
+            this.layoutControlItem12.Control = this.lookUpEditPais;
+            this.layoutControlItem12.Location = new System.Drawing.Point(0, 93);
+            this.layoutControlItem12.Name = "layoutControlItem12";
+            this.layoutControlItem12.Size = new System.Drawing.Size(269, 180);
+            this.layoutControlItem12.Text = "Pais Maestro";
+            this.layoutControlItem12.TextSize = new System.Drawing.Size(81, 13);
             // 
             // layoutControl2
             // 
@@ -422,6 +475,14 @@
             this.gridColumnEditable.Visible = true;
             this.gridColumnEditable.VisibleIndex = 4;
             // 
+            // gridColumnValidador
+            // 
+            this.gridColumnValidador.Caption = "Validador";
+            this.gridColumnValidador.FieldName = "Validador";
+            this.gridColumnValidador.Name = "gridColumnValidador";
+            this.gridColumnValidador.Visible = true;
+            this.gridColumnValidador.VisibleIndex = 5;
+            // 
             // layoutControlGroup4
             // 
             this.layoutControlGroup4.EnableIndentsWithoutBorders = DevExpress.Utils.DefaultBoolean.True;
@@ -442,14 +503,6 @@
             this.layoutControlItem1.TextSize = new System.Drawing.Size(0, 0);
             this.layoutControlItem1.TextVisible = false;
             // 
-            // gridColumnValidador
-            // 
-            this.gridColumnValidador.Caption = "Validador";
-            this.gridColumnValidador.FieldName = "Validador";
-            this.gridColumnValidador.Name = "gridColumnValidador";
-            this.gridColumnValidador.Visible = true;
-            this.gridColumnValidador.VisibleIndex = 5;
-            // 
             // Generador
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -457,9 +510,11 @@
             this.ClientSize = new System.Drawing.Size(767, 419);
             this.Controls.Add(this.layoutControl4);
             this.Controls.Add(this.layoutControl3);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(783, 458);
-            this.MinimumSize = new System.Drawing.Size(783, 458);
+            this.MaximumSize = new System.Drawing.Size(787, 462);
+            this.MinimumSize = new System.Drawing.Size(787, 462);
             this.Name = "Generador";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Generador de Maestros";
@@ -467,6 +522,8 @@
             this.layoutControl3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl5)).EndInit();
             this.layoutControl5.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.lookUpEditPais.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.checkEditEliminarFila.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.lookUpEditColumnaBaja.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkEditEntidad.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.checkEditAgregar.Properties)).EndInit();
@@ -476,6 +533,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem8)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem9)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem10)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutControlItem12)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.layoutControl2)).EndInit();
             this.layoutControl2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layoutControlGroup1)).EndInit();
@@ -536,6 +595,10 @@
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnVisible;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnEditable;
         private DevExpress.XtraGrid.Columns.GridColumn gridColumnValidador;
+        private DevExpress.XtraEditors.CheckEdit checkEditEliminarFila;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem10;
+        private DevExpress.XtraEditors.LookUpEdit lookUpEditPais;
+        private DevExpress.XtraLayout.LayoutControlItem layoutControlItem12;
     }
 }
 

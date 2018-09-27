@@ -24,7 +24,14 @@ namespace Generator
             listaTipoDatos.Add("double");
             listaTipoDatos.Add("DateTime");
             listaTipoDatos.Add("bool");
-            
+
+            List<string> listaPais = new List<string>();
+            listaPais.Add("Colombia");
+            listaPais.Add("Mexico");
+            listaPais.Add("Chile");
+
+            lookUpEditPais.Properties.DataSource = listaPais;
+
             repositoryItemLookUpEditTipoDato.DataSource = listaTipoDatos;
         }
     }
