@@ -231,12 +231,14 @@ namespace Generator
                         {
                             sw.WriteLine("              foreach (int fila in gridView" + nombreMaestro + ".GetSelectedRows())");
                             sw.WriteLine("                  gridView" + nombreMaestro + ".SetRowCellValue(fila, \"" + lookUpEditColumnaBaja.Text + "\", DateTime.Now);");
+                            sw.WriteLine("                  gridControl" + nombreMaestro + ".RefreshDataSource();");
                             sw.WriteLine("              e.Handled = true;");
                         }
                         else
                         {
                             sw.WriteLine("              foreach (int fila in gridView" + nombreMaestro + ".GetSelectedRows())");
                             sw.WriteLine("                  gridView" + nombreMaestro + ".SetRowCellValue(fila, \"Estado\", " + nombreEntidad + ".EstadoFila.Eliminada);");
+                            sw.WriteLine("                  gridControl" + nombreMaestro + ".RefreshDataSource();");
                             sw.WriteLine("              e.Handled = true;");
                         }
                         sw.WriteLine("          }");
@@ -246,6 +248,7 @@ namespace Generator
                         sw.WriteLine("          if (e.Button.ButtonType == DevExpress.XtraEditors.NavigatorButtonType.Append)");
                         sw.WriteLine("          {");
                         sw.WriteLine("              _lista" + nombreEntidad + ".Add(new "+ nombreEntidad + "());");
+                        sw.WriteLine("              gridControl" + nombreMaestro + ".RefreshDataSource();");
                         sw.WriteLine("              e.Handled = true;");
                         sw.WriteLine("          }");
                     }
