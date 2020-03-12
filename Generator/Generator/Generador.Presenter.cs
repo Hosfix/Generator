@@ -295,7 +295,7 @@ namespace Generator
                             sw.WriteLine("          if (String.IsNullOrEmpty(linea." + dato.Columna + "))");
                             sw.WriteLine("          {");
                             sw.WriteLine("              e.Valid = false;");
-                            sw.WriteLine("              e.ErrorText = \"No ha rellenado el nombre de la columna\";");
+                            sw.WriteLine($"              e.ErrorText = \"No ha rellenado {dato.Columna}\";");
                             sw.WriteLine("          }");
                         }
                         else if (dato.TipoDato != "string" && dato.TipoDato != "bool" && dato.Nullable)
@@ -303,7 +303,7 @@ namespace Generator
                             sw.WriteLine("          if (linea." + dato.Columna + " == null)");
                             sw.WriteLine("          {");
                             sw.WriteLine("              e.Valid = false;");
-                            sw.WriteLine("              e.ErrorText = \"No ha rellenado el nombre de la columna\";");
+                            sw.WriteLine($"              e.ErrorText = \"No ha rellenado {dato.Columna}\";");
                             sw.WriteLine("          }");
                         }
                     }
