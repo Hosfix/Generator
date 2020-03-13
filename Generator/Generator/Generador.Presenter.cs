@@ -265,6 +265,7 @@ namespace Generator
             string nombreMaestro = textEditNombreMaestro.Text;
             string nombreEntidad = nombreMaestro + "Entidad";
             string path = ruta + "\\" + nombreMaestro + ".Presenter.cs";
+            var gridViewName = "this.gridView" + nombreMaestro;
 
             if (File.Exists(path))
                 File.Delete(path);
@@ -308,6 +309,28 @@ namespace Generator
                         }
                     }
                     sw.WriteLine("      }");
+
+                    sw.WriteLine("      private void ValidarColumnas(" + nombreEntidad + " linea)");
+                    sw.WriteLine("      {");
+                    sw.WriteLine("          if (linea == null) return;");
+                    foreach (var dato in datosValidador)
+                    {
+                        if (dato.TipoDato == "string")
+                        {
+                            sw.WriteLine("          if (String.IsNullOrEmpty(linea." + dato.Columna + "))");
+                            sw.WriteLine("          {");
+                            sw.WriteLine($"              throw new Exception(\"No ha rellenado {dato.Columna}\");");
+                            sw.WriteLine("          }");
+                        }
+                        else if (dato.TipoDato != "string" && dato.TipoDato != "bool" && dato.Nullable)
+                        {
+                            sw.WriteLine("          if (linea." + dato.Columna + " == null)");
+                            sw.WriteLine("          {");
+                            sw.WriteLine($"              throw new Exception(\"No ha rellenado {dato.Columna}\");");
+                            sw.WriteLine("          }");
+                        }
+                    }
+                    sw.WriteLine("      }");
                 }
 
                 sw.WriteLine("      private void RefrescarDataSource()");
@@ -326,6 +349,8 @@ namespace Generator
 
                 sw.WriteLine("          try");
                 sw.WriteLine("          {");
+                sw.WriteLine($"              for (int i = 0; i < {gridViewName}{nombreMaestro}.RowCount; i++)");
+                sw.WriteLine($"                 ValidarColumnas({gridViewName}{nombreMaestro}.GetRow(i) as {nombreEntidad});");
                 sw.WriteLine("              MaestroAgent.Guardar" + nombreMaestro + "(_lista" + nombreEntidad + ");");
                 sw.WriteLine("              RefrescarDataSource();");
                 sw.WriteLine("              XtraMessageBox.Show(\"Guardado Correctamente.\", \"Informacion\", MessageBoxButtons.OK, MessageBoxIcon.Information);");
