@@ -464,6 +464,7 @@ namespace Generator
                 sw.WriteLine("          " + gridViewName + ".RowHeight = 16;");
                 sw.WriteLine("          " + gridViewName + ".OptionsView.ShowGroupPanel = false;");
                 sw.WriteLine("          " + gridViewName + ".CellValueChanged += new DevExpress.XtraGrid.Views.Base.CellValueChangedEventHandler(" + gridViewName + "_CellValueChanged);");
+                sw.WriteLine("          " + gridViewName + ".ValidateRow += new DevExpress.XtraGrid.Views.Base.ValidateRowEventHandler(" + gridViewName + "_ValidateRow);");
                 sw.WriteLine("          // ");
                 sw.WriteLine("          // cmdAceptar");
                 sw.WriteLine("          // ");
